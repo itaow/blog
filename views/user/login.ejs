@@ -1,0 +1,65 @@
+<%- include('./../layout/head') %>
+
+    <div class="container">
+        <form id="from">
+            <div class="form-group text-center">
+                <h3>登陆</h3>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">用户名</label>
+                <input type="text" name="username" class="form-control" minlength="5" placeholder="张三">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">密码</label>
+                <input type="password" name="password" class="form-control" minlength="5" placeholder="******">
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-default">登陆</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 警告框 -->
+    <div class="alert alert-danger alert-dismissible hide">
+        <strong></strong>
+    </div>
+
+
+<script>
+    $(function() {
+        $("#from").on("submit", function(e) {
+            // 阻止表单的默认提交行为
+            e.preventDefault()
+            if($.trim($("input[name='username']").val()).length == 0 ||$.trim($("input[name='password']").val()).length == 0){
+                   setShowInfo({message:"请填写用户名和密码"});
+                   return;
+            }
+            
+            $.ajax({
+                url: '/login',
+                data: $("#from").serialize(),
+                type: "post",
+                dataType: 'json',
+                success: function(result) {
+                    if (result.status != 200) {
+                        setShowInfo(result);
+                        return;
+                    }
+                    window.location.assign("/")
+                }
+            })
+        })
+
+        function setShowInfo(result){
+            $('.alert-danger').removeClass('hide');
+            $('.alert-danger strong').text(result.message)
+            setTimeout(function() {
+                $('.alert-danger').addClass('hide');
+            }, 2000)
+        }
+
+    })
+</script>
+<%- include('./../layout/footer') %>
+

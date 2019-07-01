@@ -1,0 +1,58 @@
+<%- include('./../layout/head') %>
+    <div class="container">
+        <h1>
+            <%= name %>
+        </h1>
+        <br>
+        <form id="form">
+   
+            <div class="form-group">
+                <label for="title">文章标题</label>
+                <input type="text" name="title" class="form-control" value="<%= infos.title %>">
+            </div>
+            <div class="form-group">
+                <label for="title">文章内容</label>
+                <textarea name="content" id="editor"><%= infos.content %></textarea>
+            </div>
+                     <input type="hidden" name="id" value="<%= infos.id%>">
+            <div class="form-group">
+                <button class="btn btn-primary" id="submit"> 提交编辑</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(function() {
+            var mditor = Mditor.fromTextarea(document.getElementById('editor'));
+            //获取或设置编辑器的值
+            mditor.on('ready ', function() {
+                mditor.value = '** hello ** ';
+                //是否打开分屏			
+                // mditor.split = true; //打开
+                // mditor.split = false; //关闭
+
+                //是否打开预览			
+                // mditor.preivew = true; //打开
+                // mditor.preivew = false; //关闭
+
+                //是否全屏			
+                // mditor.fullscreen = true; //打开	
+                // mditor.fullscreen = false; //关闭
+            });
+
+            $('#submit ').on('click ', function(e) {
+                e.preventDefault()
+                $.ajax({
+                    url: '/article/edit',
+                    type: 'post',
+                    data: $("#form").serialize(),
+                    success: function(data) {
+                        if (data.status != 200) {
+                            return alert(data.message)
+                        }
+                        location.assign('/article/list/<%= user.id %>')
+                    }
+                })
+            })
+        })
+    </script>
+    <%- include('./../layout/footer') %>

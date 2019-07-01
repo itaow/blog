@@ -1,0 +1,64 @@
+<%- include('./../layout/head') %>
+
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <form id="from">
+                <div class="form-group text-center">
+                    <h3>注册</h3>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">用户名</label>
+                    <input type="text" name="username" class="form-control" minlength="5" placeholder="张三">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">密码</label>
+                    <input type="password" name="password" class="form-control" minlength="5" placeholder="******">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">确认密码</label>
+                    <input type="password" name="nickname" class="form-control" minlength="5" placeholder="******">
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-default">注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 警告框 -->
+    <div class="alert alert-danger alert-dismissable hide" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+               <span aria-hidden="true">&times;</span>
+            </button>
+        <strong>这里是错误信息</strong>
+    </div>
+
+<script>
+    $(function() {
+        $("#from").on("submit", function(e) {
+
+            // 阻止表单默认提交的行为
+            e.preventDefault()
+            if ($("input:password").val() != $("input[name='nickname']").val()) {
+                alert("两次密码不一致")
+                return
+            }
+            $.ajax({
+                url: '/register',
+                type: 'post',
+                data: $("#from").serialize(),
+                dataType: 'json',
+                success: function(result) {
+                    if (result.status != 200) {
+                        $('.alert-danger').removeClass('hide').addClass('in');
+                        return;
+                    }
+                    window.location.assign("/login")
+                }
+            })
+        })
+
+
+    })
+</script>
+
+<%- include('./../layout/footer') %>

@@ -1,0 +1,40 @@
+<%- include('../layout/head') %>
+    <!-- 主体文章列表 -->
+    <div class="container">
+        <p class="h2">单文件上传上传文件</p>
+        <form id="myForm" name="myForm" enctype="application/x-www-urlencoded">
+            <div class="form-group ">
+                <input type="text" id="username" name="username" class="input-lg">
+            </div>
+            <div class="form-group ">
+                <input type="file" id="file" name="file" class="input-lg">
+            </div>
+            <button id="submit" class="btn btn-danger input-lg">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        $(function() {
+            $("#submit").on('click', function(e) {
+                e.preventDefault();
+                let myForm = document.getElementById('myForm');
+                let formData = new FormData(myForm);
+
+                let xhr = new XMLHttpRequest()
+
+                xhr.open('post', '/upload', true)
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+                xhr.send(formData)
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log('文件上传成功')
+                        return
+                    }
+                    console.log('文件上传失败')
+                }
+
+
+            })
+        })
+    </script>
+    <%- include('../layout/footer') %>

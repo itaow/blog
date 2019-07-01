@@ -1,0 +1,41 @@
+<%- include('./layout/head') %>
+    <!-- 主体文章列表 -->
+    <div class="container">
+        <% for(let i=0;i<infos.length;i++){ let item = infos[i] %>
+            <div class="row">
+                <div class="col bg-info">
+                    <h2 class=''>
+                        <a href='/article/info/<%= item.id %>'>
+                            <%= item.title %>
+                        </a>
+                    </h2>
+                    <p class="lead">
+                        <%= item.content %>
+                    </p>
+                </div>
+            </div>
+            <% } %>
+       
+        <nav aria-label="Page navigation" class="<%= totalpage?'show':'hidden'%>">
+            <ul class="pagination pagination-lg">
+                <li class="<%= nowpage-1 < 1 ? 'disabled' : '' %> ">
+                            <<%= nowpage-1==0 ?'span':'a' %>  href="?page=<%= nowpage-1 %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </<%= nowpage-1==0  ?'span':'a' %>> 
+                </li>
+                <% for(let i =1;i <= totalpage;i++){ %>
+                    <li class="<%= nowpage==i?'active':'' %>">
+                        <a href="?page=<%= i%>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <%}%>
+                        <li class="<%= nowpage+1 > totalpage ? 'disabled':'' %>" >
+                                    <<%= nowpage+1 > totalpage ?'span':'a' %> href="?page=<%= nowpage+1 %>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </<%= nowpage+1 > totalpage ?'span':'a' %>>
+                        </li>
+            </ul>
+        </nav>
+    </div>
+    <%- include('./layout/footer') %>
